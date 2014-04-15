@@ -34,6 +34,7 @@
     // Cordova is ready
     //
     function onDeviceReady() {
+    	document.getElementById("media").innerHTML = "Now Recording...";
         recordAudio();
     }
 
@@ -59,7 +60,7 @@
     </script>
   </head>
   <body>
-    <p id="media">Recording audio...</p>
+    <p id="media"></p>
     <p id="audio_position"></p>
   </body>
 </html>

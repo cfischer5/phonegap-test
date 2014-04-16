@@ -1,68 +1,63 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Device Properties Example</title>
+    <title>Capture Audio</title>
 
-    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova-2.3.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="json2.js"></script>
     <script type="text/javascript" charset="utf-8">
-	document.onerror = function(message, url, linenumber) {
-	  alert(message + " on line " + linenumber + " for " + url);
-	};
-    // Wait for Cordova to load
-    //
-    document.addEventListener("deviceready", onDeviceReady, false);
 
-    // Record audio
+    // Called when capture operation is finished
+    //
+    function captureSuccess(mediaFiles) {
+        var i, len;
+        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+            playFile(mediaFiles[i]);
+        }       
+    }
+
+    // Called if something bad happens.
     // 
-    function recordAudio() {
-        var src = "myrecording.amr";
-        var mediaRec = new Media(src, onSuccess, onError);
-
-        // Record audio
-        mediaRec.startRecord();
-
-        // Stop recording after 10 sec
-        var recTime = 0;
-        var recInterval = setInterval(function() {
-            recTime = recTime + 1;
-            setAudioPosition(recTime + " sec");
-            if (recTime >= 10) {
-                clearInterval(recInterval);
-                mediaRec.stopRecord();
-            }
-        }, 1000);
+    function captureError(error) {
+        var msg = 'An error occurred during capture: ' + error.code;
+        navigator.notification.alert(msg, null, 'Uh oh!');
     }
 
-    // Cordova is ready
+    // A button will call this function
     //
-    function onDeviceReady() {
-    	document.getElementById("media").innerHTML = "Now Recording...";
-        recordAudio();
+    function captureAudio() {
+        // Launch device audio recording application, 
+        // allowing user to capture up to 2 audio clips
+        navigator.device.capture.captureAudio(captureSuccess, captureError, {limit: 2});
     }
-
+	
+	var my_media = null;
+    // Upload files to server
+    function playFile(mediaFile) {
+    	if (my_media == null) {
+            // Create Media object from src
+            my_media = new Media(src, onMediaSuccess, onMediaError);
+        } // else play current audio
+        // Play audio
+        my_media.play();
+    }
+    
     // onSuccess Callback
     //
-    function onSuccess() {
-        console.log("recordAudio():Audio Success");
+    function onMediaSuccess() {
+        console.log("playAudio():Audio Success");
     }
 
     // onError Callback 
     //
-    function onError(error) {
+    function onMediaError(error) {
         alert('code: '    + error.code    + '\n' + 
               'message: ' + error.message + '\n');
     }
 
-    // Set audio position
-    // 
-    function setAudioPosition(position) {
-        document.getElementById('audio_position').innerHTML = position;
-    }
-
     </script>
-  </head>
-  <body>
-    <p id="media"></p>
-    <p id="audio_position"></p>
-  </body>
+    </head>
+    <body>
+        <button onclick="captureAudio();">Capture Audio</button> <br>
+    </body>
 </html>

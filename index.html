@@ -5,12 +5,12 @@
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8">
-	
+	document.getElementById("capture_button").innerHTML = "Capture Audio";
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
 	function (onDeviceReady) {
 		document.getElementById("capture_button").innerHTML = "Capture Audio";
-	
+	}
     // Called when capture operation is finished
     //
     function captureSuccess(mediaFiles) {

@@ -5,7 +5,9 @@
 
     <script type="text/javascript" charset="utf-8" src="cordova-2.3.0.js"></script>
     <script type="text/javascript" charset="utf-8">
-
+	document.onerror = function(message, url, linenumber) {
+	  alert(message + " on line " + linenumber + " for " + url);
+	};
     // Wait for Cordova to load
     //
     document.addEventListener("deviceready", onDeviceReady, false);

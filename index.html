@@ -7,9 +7,9 @@
     <script type="text/javascript" charset="utf-8">
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
+	
 	function (onDeviceReady) {
 		document.getElementById("capture_button").innerHTML = "Capture Audio";
-	}
 	
     // Called when capture operation is finished
     //
@@ -40,7 +40,7 @@
     function playFile(mediaFile) {
     	if (my_media == null) {
             // Create Media object from src
-            my_media = new Media(src, onMediaSuccess, onMediaError);
+            my_media = new Media(mediaFile.fullPath, onMediaSuccess, onMediaError);
         } // else play current audio
         // Play audio
         my_media.play();
